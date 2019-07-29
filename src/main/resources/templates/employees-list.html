@@ -25,12 +25,6 @@
     </tr>
 </table>
 
-<!--    <div th:if="${employeePage.totalPages > 0}" class="pagination"-->
-<!--         th:each="pageNumber : ${pageNumbers}">-->
-<!--        <a th:href="@{/employee(size=${employeePage.size}, page=${pageNumber})}"-->
-<!--           th:text=${pageNumber}-->
-<!--           th:class="${pageNumber==employeePage.number + 1} ? active"></a>-->
-<!--    </div>-->
     <nav aria-label="Pagination" th:if="${employeePage.totalPages gt 0}">
         <ul class="pagination justify-content-center font-weight-medium">
             <li class="page-item">
@@ -51,11 +45,7 @@
                    th:title="${'Page '+ i}"></a>
             </li>
 
-<!--            <li class="page-item disabled" th:if="${employeePage.number + 10 < employeePage.totalPages}">-->
-            <!--                <a class="page-link svg-icon" href="#">-->
-            <!--                    <span data-feather="more-horizontal" width="20" height="20"></span>-->
-            <!--                </a>-->
-            <!--            </li>-->
+
             <li class="page-item" th:classappend="${employeePage.number + 1 eq employeePage.totalPages} ? 'disabled'">
                 <a class="page-link svg-icon" th:href="@{/employee?page={id}(id=${employeePage.number + 2})}">
                     <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20"> Next </span>
