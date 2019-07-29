@@ -33,35 +33,48 @@
 <!--    </div>-->
     <nav aria-label="Pagination" th:if="${employeePage.totalPages gt 0}">
         <ul class="pagination justify-content-center font-weight-medium">
-            <li class="page-item" th:classappend="${employeePage.number eq 0} ? 'disabled'">
-                <a class="page-link svg-icon"
-                   th:href="@{/employee?page={id}(id=${employeePage.number lt 2 ? 1 : employeePage.number})}"
-                   aria-label="Previous"
-                   title="Previous Page" rel="tooltip">
-                    <span aria-hidden="true" data-feather="chevrons-left" width="20" height="20"> < </span>
+            <li class="page-item">
+                <a class="page-link svg-icon" th:href="@{/employee?page={id}(id=${(employeePage.getTotalPages() - employeePage.getTotalPages()) + 1})}">
+                    <span> |< </span>
                 </a>
             </li>
+            <li class="page-item" th:classappend="${employeePage.number eq 0} ? 'disabled'">
+                <a class="page-link svg-icon"
+                   th:href="@{/employee?page={id}(id=${employeePage.number lt 2 ? 1 : employeePage.number})}">
+                    <span> Previous</span>
+                </a>
+            </li>
+
             <li class="page-item" th:classappend="${i eq employeePage.number + 1} ? 'active'"
                 th:each="i : ${#numbers.sequence( employeePage.number + 1, employeePage.totalPages > 10 + employeePage.number ? employeePage.number + 10 : employeePage.totalPages, 1)}">
                 <a class="page-link" th:href="@{/employee?page={id}(id=${i})}" th:text="${i}"
-                   th:title="${'Page '+ i}"
-                   rel="tooltip"></a>
+                   th:title="${'Page '+ i}"></a>
             </li>
+
 <!--            <li class="page-item disabled" th:if="${employeePage.number + 10 < employeePage.totalPages}">-->
-<!--                <a class="page-link svg-icon" href="#">-->
-<!--                    <span data-feather="more-horizontal" width="20" height="20"></span>-->
-<!--                </a>-->
-<!--            </li>-->
+            <!--                <a class="page-link svg-icon" href="#">-->
+            <!--                    <span data-feather="more-horizontal" width="20" height="20"></span>-->
+            <!--                </a>-->
+            <!--            </li>-->
             <li class="page-item" th:classappend="${employeePage.number + 1 eq employeePage.totalPages} ? 'disabled'">
-                <a class="page-link svg-icon" th:href="@{/employee?page={id}(id=${employeePage.number + 2})}"
-                   aria-label="Next"
-                   title="Next Page" rel="tooltip">
-                    <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20"> > </span>
+                <a class="page-link svg-icon" th:href="@{/employee?page={id}(id=${employeePage.number + 2})}">
+                    <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20"> Next </span>
+                </a>
+            </li>
+
+
+            <li class="page-item">
+                <a class="page-link svg-icon" th:href="@{/employee?page={id}(id=${employeePage.getTotalPages()})}">
+                    <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20"> >| </span>
                 </a>
             </li>
         </ul>
     </nav>
-
+    <div class="text-center text-uppercase">
+    <span th:text="${employeePage.getNumber() +1}"></span>
+        <span>Of</span>
+        <span th:text="${employeePage.getTotalPages()}"></span>
+    </div>
 </div>
 </body>
 </html>

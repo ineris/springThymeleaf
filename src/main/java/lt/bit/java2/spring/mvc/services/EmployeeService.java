@@ -38,7 +38,7 @@ public class EmployeeService {
     }
 
     public List<Employee> findAll() {
-        List<Employee> employeeslist = jdbcTemplate.query("SELECT * FROM employees LIMIT 500", employeeRowMapper);
+        List<Employee> employeeslist = jdbcTemplate.query("SELECT * FROM employees LIMIT 502", employeeRowMapper);
         return employeeslist;
     }
 
