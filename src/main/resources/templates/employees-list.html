@@ -1,28 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>List of Employees</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
+<div class="container">
  <h1>List of Employees</h1>
 
-<table>
+<table class="table">
     <tr>
         <th>Emp No</th>
         <th>First Name</th>
         <th>Last Name</th>
     </tr>
-    <tr>
-        <td><a href="/employee/10001">10001</a></td>
-        <td>Georgi</td>
-        <td>Facelo</td>
-    </tr>
-    <tr>
-        <td><a href="/employee/10002">10002</a></td>
-        <td>Bezabiel</td>
-        <td>Simmel</td>
+    <tr th:each="employee, iStat : ${employeePage}"
+        th:style="${iStat.odd}? 'font-weight: bold;'"
+         th:alt-title="${iStat.even}? 'even' : 'odd'">
+        <td><a th:href="@{/employee/{id}(id=${employee.empNo})}" th:text="${employee.empNo}"></a></td>
+        <td th:text="${employee.firstName}"></td>
+        <td  th:text="${employee.lastName}"></td>
     </tr>
 </table>
+
+<!--    <div th:if="${employeePage.totalPages > 0}" class="pagination"-->
+<!--         th:each="pageNumber : ${pageNumbers}">-->
+<!--        <a th:href="@{/employee(size=${employeePage.size}, page=${pageNumber})}"-->
+<!--           th:text=${pageNumber}-->
+<!--           th:class="${pageNumber==employeePage.number + 1} ? active"></a>-->
+<!--    </div>-->
+    <nav aria-label="Pagination" th:if="${employeePage.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-medium">
+            <li class="page-item" th:classappend="${employeePage.number eq 0} ? 'disabled'">
+                <a class="page-link svg-icon"
+                   th:href="@{/employee?page={id}(id=${employeePage.number lt 2 ? 1 : employeePage.number})}"
+                   aria-label="Previous"
+                   title="Previous Page" rel="tooltip">
+                    <span aria-hidden="true" data-feather="chevrons-left" width="20" height="20"> < </span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${i eq employeePage.number + 1} ? 'active'"
+                th:each="i : ${#numbers.sequence( employeePage.number + 1, employeePage.totalPages > 10 + employeePage.number ? employeePage.number + 10 : employeePage.totalPages, 1)}">
+                <a class="page-link" th:href="@{/employee?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}"
+                   rel="tooltip"></a>
+            </li>
+<!--            <li class="page-item disabled" th:if="${employeePage.number + 10 < employeePage.totalPages}">-->
+<!--                <a class="page-link svg-icon" href="#">-->
+<!--                    <span data-feather="more-horizontal" width="20" height="20"></span>-->
+<!--                </a>-->
+<!--            </li>-->
+            <li class="page-item" th:classappend="${employeePage.number + 1 eq employeePage.totalPages} ? 'disabled'">
+                <a class="page-link svg-icon" th:href="@{/employee?page={id}(id=${employeePage.number + 2})}"
+                   aria-label="Next"
+                   title="Next Page" rel="tooltip">
+                    <span aria-hidden="true" data-feather="chevrons-right" width="20" height="20"> > </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
 </body>
 </html>
